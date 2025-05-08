@@ -18,7 +18,6 @@ export default function App() {
   const [roundStatus, setRoundStatus] = useState("Waiting");
   const [currentRoundId, setCurrentRoundId] = useState(null);
   const [events, setEvents] = useState([]);
-  const [isLoading, setIsLoading] = useState(true);
   const [countdown, setCountdown] = useState(0);
   const [startTime, setStartTime] = useState(0);
 
@@ -32,28 +31,6 @@ export default function App() {
     }, 1000);
     return () => clearInterval(interval);
   }, [startTime]);
-
-  useEffect(() => {
-    const initializePlayer = async () => {
-      try {
-        const response = await axios.post(
-          "http://localhost:3000/create-player",
-          {
-            usd: 1000,
-            btc_split: 0.5, // control the splitting
-          }
-        );
-        const newPlayerId = response.data.playerId;
-        setPlayerId(newPlayerId);
-      } catch (error) {
-        console.error("Error creating player:", error);
-        setEvents((prev) => [...prev, "Error: Could not initialize player"]);
-      } finally {
-        setIsLoading(false);
-      }
-    };
-    initializePlayer();
-  }, []);
 
   useEffect(() => {
     if (!playerId) return;
@@ -77,7 +54,6 @@ export default function App() {
     });
 
     socket.on("round_create", (data) => {
-      console.log("round_create", data);
       setEvents((prev) => [
         ...prev,
         `Upcoming Round Hash seed: ${data.seed_hash}`,
@@ -99,11 +75,7 @@ export default function App() {
       const response = await axios.get(
         `http://localhost:3000/balance/${data.player_id}`
       );
-      console.log("player_cashout", data);
       setBalance(response.data);
-      console.log("playerId", playerId);
-      console.log("playerId", data.player_id);
-
       toast.success(`You cashed out $${data.usd_payout.toFixed(2)}`);
       setEvents((prev) => [
         ...prev,
@@ -112,12 +84,11 @@ export default function App() {
     });
 
     socket.on("round_crash", (data) => {
-      if (currentRoundId)
-        setEvents((prev) => [
-          ...prev,
-          `Round Crashed at: ${data.crash_point.toFixed(2)}x
+      setEvents((prev) => [
+        ...prev,
+        `Round Crashed at: ${data.crash_point.toFixed(2)}x
           Verify with Server seed: ${data.server_seed} `,
-        ]);
+      ]);
 
       setRoundStatus("Crashed");
       setMultiplier(1);
@@ -132,6 +103,30 @@ export default function App() {
       socket.off("round_crash");
     };
   }, []);
+
+  const createPlayer = async () => {
+    try {
+      const response = await axios.post("http://localhost:3000/create-player", {
+        usd: 1000,
+        btc_split: 0.5, // control the splitting
+      });
+      const newPlayerId = response.data.playerId;
+      setPlayerId(newPlayerId);
+    } catch (error) {
+      console.error("Error creating player:", error);
+      setEvents((prev) => [...prev, "Error: Could not initialize player"]);
+    }
+  };
+  const addPlayer = async () => {
+    const playerId = document.getElementById("playerIdInput").value;
+    setPlayerId(playerId);
+    try {
+      const res = await axios.get(`http://localhost:3000/verify/${playerId}`);
+      toast.success(res.data.message);
+    } catch (error) {
+      toast.error(error?.response?.data?.message || "Player Doesn't Exists");
+    }
+  };
 
   const placeBet = async () => {
     const betAmount = document.getElementById("betAmount").value;
@@ -180,17 +175,20 @@ export default function App() {
     document.getElementById("cashOutBtn").disabled = true;
   };
 
-  if (isLoading) {
-    return (
-      <div className="flex justify-center items-center h-screen text-5xl">
-        Loading...
-      </div>
-    );
-  }
-
   return (
     <div className="container mx-auto p-6 max-w-3xl">
       <h1 className="text-4xl font-bold mb-6">Crypto Crash Game</h1>
+
+      <div className="bg-white shadow-2xl rounded-lg p-6 mb-6">
+        <h2 className="text-2xl font-semibold mb-4">Player ID</h2>
+        <Input id="playerIdInput" type={"text"} className={"max-w-xl"} />
+        <Button className="mt-4" onClick={createPlayer}>
+          Create
+        </Button>
+        <Button className="mt-4 ml-5" onClick={addPlayer}>
+          Existing
+        </Button>
+      </div>
 
       {/* Wallet Balance */}
       <div className="bg-white shadow-2xl rounded-lg p-6 mb-6">
@@ -210,7 +208,6 @@ export default function App() {
         </p>
       </div>
 
-      {/* Place Bet */}
       <div className="bg-white shadow-2xl rounded-lg p-6 mb-6">
         <h2 className="text-2xl font-semibold mb-4">Place Bet</h2>
         <div className="flex flex-col sm:flex-row gap-4">

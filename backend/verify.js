@@ -1,7 +1,7 @@
 import crypto from "crypto";
 
 const generateCrashPoint = () => {
-  const serverSeed = "";
+  const serverSeed = "44baf13341523287b072cd4b586006d1";
   const hash = crypto.createHash("sha256").update(serverSeed).digest("hex");
 
   return {
@@ -12,4 +12,4 @@ const generateCrashPoint = () => {
 const res = generateCrashPoint();
 console.log(res);
 
-// 3dea986a52ca6017dd24acb0d5b7f2fd1e5554824566ff34689beef42f9dd035
+// 0176c8599ef4402b592c9934320d90834e347487a21971772a51bb23a78111e2

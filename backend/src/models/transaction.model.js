@@ -5,7 +5,7 @@ const transactionSchema = new mongoose.Schema({
   usd_amount: Number,
   crypto_amount: Number,
   crypto_currency: String,
-  transaction_type: { type: String, enum: ["cashout", "bet"] }, // "cashout" , "bet"
+  transaction_type: { type: String, enum: ["cashout", "bet"] },
   transaction_hash: String,
   price_at_time: Number,
   timestamp: Date,
