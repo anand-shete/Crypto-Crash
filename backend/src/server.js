@@ -33,7 +33,6 @@ await connectDB();
 const m = 0.1;
 let currentRound = null;
 
-// constantly check for client data and update it every 100ms
 setInterval(async () => {
   const now = Date.now();
   if (!currentRound || currentRound.status === "crashed") {

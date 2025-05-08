@@ -24,7 +24,7 @@ const fetchLivePrices = async () => {
     console.error("Error fetching live crypto prices:", error);
   }
 };
-setInterval(fetchLivePrices, 10000); // FIXME: change this
+setInterval(fetchLivePrices, 10000);
 
 export const getPriceFromCache = async () => {
   let BTC = await redis.get("crypto:BTC");

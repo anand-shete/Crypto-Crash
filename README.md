@@ -76,7 +76,11 @@ COINGECKO_API=your_COINGECKO_API
 ```
 cd ../backend
 npm run start       # To start the backend server
+```
 
+Inside a New Terminal
+
+```
 cd ../frontend
 npm run dev         # To start the frontend
 ```
@@ -105,22 +109,22 @@ node seed.js
 
 ## 🎮 Game Mechanics
 
-- Rounds: Start 10 seconds after a crash, with a waiting phase for bets.
-- Multiplier: Grows exponentially (e^(0.1 \* time)), crashes at a provably fair point.
-- Betting: Players bet in USD, converted to BTC/ETH using CoinGecko prices cached every 10 seconds (via Redis).
-- Cashout: Players can cash out during the running phase, receiving crypto payouts (displayed as USD in UI).
-- Provably Fair: Crash point derived from a hashed server seed, verifiable via /verify_crash. You can also use the verify.js
+- **Rounds**: Start 10 seconds after a crash, with a waiting phase for bets.
+- **Multiplier**: Grows exponentially (e^(0.1 \* time)), crashes at a provably fair point.
+- **Betting**: Players bet in USD, converted to BTC/ETH using CoinGecko prices cached every 10 seconds (via Redis).
+- **Cashout**: Players can cash out during the running phase, receiving crypto payouts (displayed as USD in UI).
+- **Provably** Fair: Crash point derived from a hashed server seed, verifiable via /verify_crash. You can also use the verify.js
 
 ## 🧪 Testing
 
 **API**: Use Postman to test endpoints:
 
-- Healthcheck: GET `/`
-- Create a player: POST `/create-player`
-- Verfify Player: GET `/verify/:playerId`
-- Check balance: GET `/balance/:player_id`
-- Place bet: POST `/bet`
-- Verify crash: GET `/verify_crash/:round_id`
+- **Healthcheck**: GET `/`
+- **Create a player**: POST `/create-player`
+- **Verfify Player**: GET `/verify/:playerId`
+- **Check balance**: GET `/balance/:player_id`
+- **Place bet**: POST `/bet`
+- **Verify crash**: GET `/verify_crash/:round_id`
 
 **WebSocket**: Use the frontend to interact with game events (bet, cashout, see multiplier updates).
 
