@@ -42,7 +42,7 @@ router.get("/verify/:playerId", async (req, res) => {
     if (!player)
       return res.status(404).json({ message: "Player Doesn't Exists" });
 
-    return res.status(200).json({ message: "Player Exists", player });
+    return res.status(200).json({ message: "Success", player });
   } catch (error) {
     // console.log("error getting player", error);
     return res.status(500).json({ message: "Player Doesn't Exists" });

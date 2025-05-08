@@ -13,7 +13,7 @@ Check out the demo of the frontend page below:
 - **Real-Time Gameplay**: Lightning-fast rounds with live multiplier updates via WebSocket, keeping players on edge.
 - **Provably Fair**: Cryptographically secure crash points ensure transparency, verifiable by players.
 - **Live Crypto Prices**: Seamless USD-to-BTC/ETH conversions using CoinGecko, cached smartly every 10 seconds for performance.
-- **Sleek UI**: Intuitive React interface with Tailwind and Shadcn, showing total USD balance and crypto details in style.
+- **Event Logs**: Detailed logs of each event such as Starting of New Round, Displaying the secure hash keys for verification.
 - **Robust Backend**: MongoDB powers persistent storage of players, bets, and rounds, with Redis for ultra-fast price access.
 - **Multiplayer Magic**: Cashout notifications broadcast instantly to all players, creating a dynamic, competitive vibe.
 
@@ -21,9 +21,9 @@ Check out the demo of the frontend page below:
 
 To import the Postman collection and start interacting with the API endpoints:
 
-1. Download the Postman collection file from the project:
+1. Open **Postman** and click on **Import**.
+2. Download the Postman collection file from the project:
    - [Download Postman Collection JSON](./backend/postman.json)
-2. Open **Postman** and click on **Import**.
 3. Select the **Upload Files** option and choose the downloaded collection JSON file.
 4. After importing, you can now interact with all the API endpoints.
 
